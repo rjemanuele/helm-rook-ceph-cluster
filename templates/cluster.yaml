@@ -1,0 +1,21 @@
+#################################################################################
+# The Ceph Cluster CRD example
+#################################################################################
+apiVersion: ceph.rook.io/v1beta1
+kind: Cluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    # For the latest ceph images, see https://hub.docker.com/r/ceph/ceph/tags
+    image: ceph/ceph:v13.2.2-20181023
+  dataDirHostPath: /var/lib/rook
+  dashboard:
+    enabled: true
+  storage:
+    useAllNodes: true
+    useAllDevices: false
+    config:
+      databaseSizeMB: "1024"
+      journalSizeMB: "1024"

@@ -1,4 +1,4 @@
 apiVersion: v1
 description: A Helm chart for creating a rook-ceph cluster
 name: rook-ceph-cluster
-version: 0.1.0
+version: 0.2.0

@@ -1,19 +1,21 @@
+{{- $namespace := .Release.Namespace -}}
+{{- range .Values.storageClasses -}}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: rook-ceph-block
-{{- if .Values.StorageClass.default }}
+  name: {{ .name }}
+{{- if .default }}
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
 {{- end }}
 provisioner: ceph.rook.io/block
 parameters:
-  pool: replicapool
+  pool: {{ .pool }}
   # The value of "clusterNamespace" MUST be the same as the one in which your rook cluster exist
-  clusterNamespace: rook-ceph
+  clusterNamespace: {{ $namespace }}
   # Specify the filesystem type of the volume. If not specified, it will use `ext4`.
-  # fstype: xfs
+  fstype: {{ .fstype }}
 # Optional, default reclaimPolicy is "Delete". Other options are: "Retain", "Recycle" as documented in https://kubernetes.io/docs/concepts/storage/storage-classes/ 
-reclaimPolicy: Retain
-
-
+reclaimPolicy: {{ .reclaimPolicy }}
+---
+{{- end }}

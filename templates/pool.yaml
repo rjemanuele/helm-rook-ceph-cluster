@@ -1,9 +1,11 @@
+{{- $namespace := .Release.Namespace -}} 
+{{- range .Values.cephBlockPools }}
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
 metadata:
-  name: replicapool
-  namespace: rook-ceph
+  name: {{ .name }}
+  namespace: {{ $namespace }}
 spec:
-  failureDomain: host
-  replicated:
-    size: 3
+{{ toYaml .settings | indent 2 }}
+---
+{{- end }}

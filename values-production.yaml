@@ -4,13 +4,14 @@
 
 image: ceph/ceph:v13.2.4-20190109
 
-dataDirHostPath: /var/lib/rook
+dataDirHostPath: /var/lib/rook-ssd
 
 dashboardEnabled: true
 
 monCount: 3
 
 devices:
+  - name: "sdb"
 
 cephBlockPools:
   - name: replicapool
@@ -20,8 +21,8 @@ cephBlockPools:
         size: 3
 
 storageClasses:
-  - name: rook-ceph-block
+  - name: rook-ceph-ssd-block
     pool: replicapool
-    default: false
+    default: true
     fstype: ext4
     reclaimPolicy: Retain

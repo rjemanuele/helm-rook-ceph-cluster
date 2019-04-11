@@ -4,21 +4,26 @@
 apiVersion: ceph.rook.io/v1
 kind: CephCluster
 metadata:
-  name: rook-ceph
-  namespace: rook-ceph
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
 spec:
   cephVersion:
     # For the latest ceph images, see https://hub.docker.com/r/ceph/ceph/tags
-    image: ceph/ceph:v13.2.4-20190109
-  dataDirHostPath: /var/lib/rook
+    image: {{ .Values.image }}
+  dataDirHostPath: {{ .Values.dataDirHostPath }}
   dashboard:
-    enabled: true
+    enabled: {{ .Values.dashboardEnabled }}
   mon:
-    count: 3
-    allowMultiplePerNode: true
+    count: {{ .Values.monCount }}
+    allowMultiplePerNode: false
   storage:
     useAllNodes: true
     useAllDevices: false
+    devices:
+      {{- range .Values.devices }}
+      -
+{{ toYaml . | indent 8 }}
+      {{- end }}
     config:
       databaseSizeMB: "1024"
       journalSizeMB: "1024"
